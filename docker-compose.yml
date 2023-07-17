@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+
+  neo4j-social:
+
+    image: neo4j:4.4.9-community
+    container_name: neo4j-social
+    volumes:
+      - ./neo4j/plugins:/plugins
+      - ./neo4j/data:/data
+      - ./neo4j/import:/import
+    env_file:
+      - .env
+    ports:
+      - "8474:7474"
+      - "8687:7687"
+    environment:
+      NEO4J_AUTH: neo4j/${PASS?Variable not set}
+      NEO4JLABS_PLUGINS: '["apoc", "n10s"]'
+    networks:
+      - social-api-network
+
+  api-social:
+    image: social
+    container_name: social
+    ports:
+      - "8001:8000"
+    env_file:
+      - .env
+    build:
+      context: ./api
+      dockerfile: api.dockerfile
+    volumes:
+      - ./api/app:/app
+    depends_on:
+      - neo4j-social
+    networks:
+      - social-api-network
+
+networks:
+  social-api-network:

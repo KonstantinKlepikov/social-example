@@ -1,0 +1,10 @@
+fastapi==0.79.1
+pydantic==1.10.5
+python-dotenv==0.21.1
+python-jose==3.3.0
+PyYAML==6.0
+starlette==0.19.1
+toml==0.10.2
+uvicorn==0.18.3
+neo4j==4.4.5
+py2neo==2021.2.3
